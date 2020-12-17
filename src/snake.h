@@ -7,7 +7,10 @@ class CSnake:public CFramedWindow
 {
 public:
   CSnake(CRect r, char _c = ' ');
-
+  void paint();
+private:
+  unsigned int level;
+  void paintHelp();
 };
 
 #endif
