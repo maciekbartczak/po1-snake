@@ -1,6 +1,7 @@
 #include "snake.h"
 #include "screen.h"
 #include <cstring>
+#include <thread>
 #include <ncurses.h>
 
 CSnake::CSnake(CRect r, char _c /*=' '*/):
@@ -15,6 +16,8 @@ CSnake::CSnake(CRect r, char _c /*=' '*/):
   food.x = geom.topleft.x + geom.size.x / 2;
   food.y = geom.topleft.y + 5;
   snakeDir = KEY_RIGHT;
+  t = std::chrono::system_clock::now();
+  fps = 15;
 }
 
 void CSnake::paint() {
@@ -29,6 +32,7 @@ void CSnake::paint() {
     if(isPaused){
       paintPause();
     }
+
 }
 void CSnake::paintHelp() {
   gotoyx(geom.topleft.y + 3, geom.topleft.x + 3);
@@ -43,12 +47,14 @@ void CSnake::paintHelp() {
   printl("%s","move window (pause mode)");
 }
 bool CSnake::handleEvent(int c) {
+
   if(isPaused){
       if(CFramedWindow::handleEvent(c)){
         moveWithWindow(c);
         return true;
       }
   }
+
   if( c == 'h'){
     displayHelp = !displayHelp;
     return true;
@@ -57,10 +63,15 @@ bool CSnake::handleEvent(int c) {
     isPaused = !isPaused;
     return true;
   }
-
+  t += std::chrono::milliseconds(1000 / fps);
+  this_thread::sleep_until(t);
   if( moveSnake(c) ){
     return true;
   }
+  if(!isPaused){
+    return moveSnake(snakeDir);
+  }
+
   return false;
 }
 

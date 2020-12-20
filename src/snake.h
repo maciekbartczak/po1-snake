@@ -3,14 +3,16 @@
 
 #include "winsys.h"
 #include <vector>
+#include <chrono>
 
-class CSnake:public CFramedWindow
-{
+class CSnake:public CFramedWindow {
 public:
   CSnake(CRect r, char _c = ' ');
   void paint();
   bool handleEvent(int c);
+
 private:
+  unsigned int fps;
   unsigned int level;
   bool displayHelp;
   bool isPaused;
@@ -28,6 +30,8 @@ private:
   void generateFood();
   void eatFood();
   void moveWithWindow(int c);
+  std::chrono::time_point<std::chrono::system_clock> t;
+
 };
 
 #endif
