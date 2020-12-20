@@ -2,7 +2,7 @@
 #define __SNAKE_H__
 
 #include "winsys.h"
-#include <ncurses.h>
+#include <vector>
 
 class CSnake:public CFramedWindow
 {
@@ -17,6 +17,17 @@ private:
   void paintHelp();
   void paintPause();
   void paintLevel();
+  void paintSnake();
+  void paintFood();
+  bool moveSnake(int c);
+  int snakeDir;
+  CPoint snakeHead;
+  std::vector<CPoint> snakeBody;
+  unsigned int bodyLength;
+  CPoint food;
+  void generateFood();
+  void eatFood();
+  void moveWithWindow(int c);
 };
 
 #endif
