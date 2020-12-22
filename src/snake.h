@@ -16,12 +16,15 @@ private:
   unsigned int level;
   bool displayHelp;
   bool isPaused;
+  bool gameOver;
   void paintHelp();
   void paintPause();
   void paintLevel();
   void paintSnake();
   void paintFood();
+  void paintGameOver();
   bool moveSnake(int c);
+  bool checkCollision();
   int snakeDir;
   CPoint snakeHead;
   std::vector<CPoint> snakeBody;
@@ -31,7 +34,6 @@ private:
   void eatFood();
   void moveWithWindow(int c);
   std::chrono::time_point<std::chrono::system_clock> t;
-
 };
 
 #endif

@@ -18,21 +18,25 @@ CSnake::CSnake(CRect r, char _c /*=' '*/):
   snakeDir = KEY_RIGHT;
   t = std::chrono::system_clock::now();
   fps = 15;
+  gameOver = false;
 }
 
 void CSnake::paint() {
     CFramedWindow::paint();
-    eatFood();
-    paintFood();
-    paintSnake();
-    paintLevel();
-    if(displayHelp){
-      paintHelp();
+    if(!gameOver){
+      eatFood();
+      paintFood();
+      paintSnake();
+      paintLevel();
+      if(displayHelp){
+        paintHelp();
+      }
+      if(isPaused){
+        paintPause();
+      }
+    }else{
+      paintGameOver();
     }
-    if(isPaused){
-      paintPause();
-    }
-
 }
 void CSnake::paintHelp() {
   gotoyx(geom.topleft.y + 3, geom.topleft.x + 3);
@@ -66,10 +70,17 @@ bool CSnake::handleEvent(int c) {
   t += std::chrono::milliseconds(1000 / fps);
   this_thread::sleep_until(t);
   if( moveSnake(c) ){
+    if ( checkCollision() ){
+      gameOver = true;
+    }
     return true;
   }
   if(!isPaused){
-    return moveSnake(snakeDir);
+    moveSnake(snakeDir);
+    if ( checkCollision() ){
+      gameOver = true;
+    }
+    return true;
   }
 
   return false;
@@ -165,6 +176,8 @@ void CSnake::generateFood() {
 void CSnake::eatFood() {
   if( snakeHead.x == food.x && snakeHead.y == food.y ){
     bodyLength++;
+    level++;
+    fps++;
     generateFood();
   }
 }
@@ -192,4 +205,18 @@ void CSnake::moveWithWindow(int c) {
   }
   food.x += deltaX;
   food.y += deltaY;
+}
+
+void CSnake::paintGameOver() {
+  const char caption[] = "GAME OVER, YOUR SCORE: ";
+  gotoyx( geom.topleft.y + (geom.size.y / 2), geom.topleft.x + ((geom.size.x - (std::strlen(caption) + std::to_string(level).size())) / 2) );
+  printl("%s%d", caption,level);
+}
+bool CSnake::checkCollision() {
+  for (auto i : snakeBody){
+    if (snakeHead.x == i.x && snakeHead.y == i.y){
+      return true;
+    }
+  }
+  return false;
 }
