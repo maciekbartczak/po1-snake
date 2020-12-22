@@ -3,6 +3,7 @@ OBJ=./obj
 
 all: $(OBJ) winsys
 
+
 # Creating folder
 $(OBJ):
 	mkdir -p $(OBJ)

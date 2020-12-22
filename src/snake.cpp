@@ -175,6 +175,14 @@ bool CSnake::moveSnake(int c) {
 void CSnake::generateFood() {
   food.x = geom.topleft.x + 2 + rand() % (geom.size.x - 4);
   food.y = geom.topleft.y + 2 + rand() % (geom.size.y - 4);
+  if (food.x == snakeHead.x && food.y == snakeHead.y){
+    return generateFood();
+  }
+  for ( auto i : snakeBody){
+    if (food.x == i.x && food.y == i.y){
+      return generateFood();
+    }
+  }
 }
 
 void CSnake::eatFood() {
@@ -228,9 +236,7 @@ bool CSnake::checkCollision() {
 void CSnake::resetGame() {
   gameOver = false;
   displayHelp = false;
-  if(!isPaused){
-    isPaused = false;
-  }
+  isPaused = false;
   fps = 15;
   level = 1;
   bodyLength = 0;

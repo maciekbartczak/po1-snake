@@ -10,7 +10,6 @@ public:
   CSnake(CRect r, char _c = ' ');
   void paint();
   bool handleEvent(int c);
-
 private:
   unsigned int fps;
   unsigned int level;

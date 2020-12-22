@@ -1,0 +1,12 @@
+.idea/.gitignore
+.idea/deployment.xml
+.idea/misc.xml
+.idea/snake.iml
+.idea/vcs.xml
+.vscode/launch.json
+.vscode/settings.json
+obj/main.o
+obj/screen.o
+obj/snake.o
+obj/winsys.o
+winsys
