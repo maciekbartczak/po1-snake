@@ -52,7 +52,7 @@ void CSnake::paintHelp() {
 }
 bool CSnake::handleEvent(int c) {
 
-  if(isPaused){
+  if(isPaused || gameOver){
       if(CFramedWindow::handleEvent(c)){
         moveWithWindow(c);
         return true;
@@ -65,6 +65,10 @@ bool CSnake::handleEvent(int c) {
   }
   if( c == 'p' ){
     isPaused = !isPaused;
+    return true;
+  }
+  if( c == 'r' ){
+    resetGame();
     return true;
   }
   t += std::chrono::milliseconds(1000 / fps);
@@ -219,4 +223,21 @@ bool CSnake::checkCollision() {
     }
   }
   return false;
+}
+
+void CSnake::resetGame() {
+  gameOver = false;
+  displayHelp = false;
+  if(!isPaused){
+    isPaused = false;
+  }
+  fps = 15;
+  level = 1;
+  bodyLength = 0;
+  snakeBody.clear();
+  snakeHead.x = geom.topleft.x + (geom.size.x / 2) + 1;
+  snakeHead.y = geom.topleft.y + (geom.size.y / 2);
+  food.x = geom.topleft.x + geom.size.x / 2;
+  food.y = geom.topleft.y + 5;
+  snakeDir = KEY_RIGHT;
 }

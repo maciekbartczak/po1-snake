@@ -34,6 +34,7 @@ private:
   void eatFood();
   void moveWithWindow(int c);
   std::chrono::time_point<std::chrono::system_clock> t;
+  void resetGame();
 };
 
 #endif
