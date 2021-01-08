@@ -11,11 +11,17 @@ public:
   void paint();
   bool handleEvent(int c);
 private:
-  unsigned int fps;
+  unsigned int delay;
   unsigned int level;
   bool displayHelp;
   bool isPaused;
   bool gameOver;
+  int snakeDir;
+  unsigned int bodyLength;
+  CPoint food;
+  CPoint snakeHead;
+  std::vector<CPoint> snakeBody;
+  std::chrono::time_point<std::chrono::system_clock> t;
   void paintHelp();
   void paintPause();
   void paintLevel();
@@ -24,16 +30,12 @@ private:
   void paintGameOver();
   bool moveSnake(int c);
   bool checkCollision();
-  int snakeDir;
-  CPoint snakeHead;
-  std::vector<CPoint> snakeBody;
-  unsigned int bodyLength;
-  CPoint food;
   void generateFood();
   void eatFood();
   void moveWithWindow(int c);
-  std::chrono::time_point<std::chrono::system_clock> t;
   void resetGame();
+  void shiftSnakeBody();
+  void moveSnakeThroughBorder();
 };
 
 #endif
